@@ -24,7 +24,7 @@ talkerRouter.get('/', async (req, res) => {
         }
         return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
     } catch (error) {
-        return res.status(400).end();
+        console.log(error);
     }
    });
 
