@@ -8,7 +8,7 @@ talkerRouter.get('/', async (req, res) => {
         const data = await readFile();
         if (data.length > 1) return res.status(200).json(data);
         return res.status(200).json([]);
-    } catch (error) {
+    } catch (Error) {
         return res.status(404).end();
     }
    });
@@ -24,7 +24,7 @@ talkerRouter.get('/', async (req, res) => {
         }
         return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
     } catch (error) {
-        return res.status(400).json({ message: 'Erro na requisição' });
+        return res.status(400).end();
     }
    });
 
