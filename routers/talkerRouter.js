@@ -13,4 +13,19 @@ talkerRouter.get('/', async (req, res) => {
     }
    });
 
+   talkerRouter.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = await readFile();
+        const findingId = data.find((person) => Number(person.id) === Number(id));
+
+        if (findingId) {
+            return res.status(200).json(findingId);
+        }
+        return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    } catch (error) {
+        return res.status(400).json({ message: 'Erro na requisição' });
+    }
+   });
+
 module.exports = talkerRouter;
