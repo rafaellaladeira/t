@@ -46,7 +46,7 @@ talkerRouter.get('/', async (req, res) => {
         try {
             const { name, age, talk: { watchedAt, rate } } = req.body;
             const data = await readFile();
-            const newData = { id: data.length + 1, name, age, talk: { watchedAt, rate } }
+            const newData = { id: data.length + 1, name, age, talk: { watchedAt, rate } };
             const allData = [...data, newData];
             writeFIle(allData);
             console.log(allData);
