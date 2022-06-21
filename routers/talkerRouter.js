@@ -49,10 +49,30 @@ talkerRouter.get('/', async (req, res) => {
             const newData = { id: data.length + 1, name, age, talk: { watchedAt, rate } };
             const allData = [...data, newData];
             writeFIle(allData);
-            console.log(allData);
             res.status(201).json(newData);
         } catch (error) {
             res.status(400).end();
+        }
+   });
+
+   talkerRouter.put('/:id',
+        tokenValidation, 
+        nameValidation,
+        ageValidation,
+        talkValidation,
+        talkRateValidation,
+        talkWatchedValidation, 
+        async (req, res) => {
+        const { id } = req.params;
+        const { name, age, talk: { watchedAt, rate } } = req.body;
+        const data = await readFile();
+        const newPerson = data.find((person) => person.id === Number(id));
+        console.log(newPerson);
+        if (newPerson !== null || newPerson !== undefined) {
+            const newValue = { id: newPerson.id, name, age, talk: { watchedAt, rate } };
+            // const teste = [...data, newValue];
+            writeFIle([newValue]);
+            return res.status(200).json(newValue);
         }
    });
 
