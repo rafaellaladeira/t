@@ -76,4 +76,16 @@ talkerRouter.get('/', async (req, res) => {
         }
    });
 
+   talkerRouter.delete('/:id', tokenValidation, async (req, res) => {
+        const { id } = req.params;
+        const data = await readFile();
+        const newPerson = data.findIndex((person) => person.id === Number(id));
+    
+        if (newPerson !== -1) {
+            const newData = data.slice(newPerson, 1);
+            writeFIle(newData);
+            return res.status(204).end();
+        }
+   });
+
 module.exports = talkerRouter;
