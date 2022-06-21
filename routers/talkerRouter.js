@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const readFile = require('../helpers/readFile');
 const writeFIle = require('../helpers/writeFile');
+const searchValidation = require('../middlewares/searchTermValidation');
 const { tokenValidation, 
     nameValidation, 
     ageValidation,
@@ -9,6 +10,19 @@ const { tokenValidation,
     talkValidation } = require('../middlewares/tokenValidation');
 
 const talkerRouter = Router();
+
+talkerRouter.get('/search', 
+        tokenValidation, 
+        searchValidation,
+        async (req, res) => {
+        console.log(req.query.q);
+        const nameSearch = req.query.q;
+        const data = await readFile();
+        const searchInput = data.filter((person) => person.name.includes(nameSearch));
+        if (searchInput) {
+            return res.status(200).json(searchInput);
+        }
+   });
 
 talkerRouter.get('/', async (req, res) => {
     try {
@@ -70,7 +84,6 @@ talkerRouter.get('/', async (req, res) => {
         console.log(newPerson);
         if (newPerson !== null || newPerson !== undefined) {
             const newValue = { id: newPerson.id, name, age, talk: { watchedAt, rate } };
-            // const teste = [...data, newValue];
             writeFIle([newValue]);
             return res.status(200).json(newValue);
         }
