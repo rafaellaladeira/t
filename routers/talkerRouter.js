@@ -1,5 +1,12 @@
 const { Router } = require('express');
 const readFile = require('../helpers/readFile');
+const writeFIle = require('../helpers/writeFile');
+const { tokenValidation, 
+    nameValidation, 
+    ageValidation,
+    talkWatchedValidation,
+    talkRateValidation,
+    talkValidation } = require('../middlewares/tokenValidation');
 
 const talkerRouter = Router();
 
@@ -26,6 +33,27 @@ talkerRouter.get('/', async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+   });
+
+   talkerRouter.post('/',
+        tokenValidation, 
+        nameValidation,
+        ageValidation,
+        talkValidation,
+        talkRateValidation,
+        talkWatchedValidation,
+        async (req, res) => {
+        try {
+            const { name, age, talk: { watchedAt, rate } } = req.body;
+            const data = await readFile();
+            const newData = { id: data.length + 1, name, age, talk: { watchedAt, rate } }
+            const allData = [...data, newData];
+            writeFIle(allData);
+            console.log(allData);
+            res.status(201).json(newData);
+        } catch (error) {
+            res.status(400).end();
+        }
    });
 
 module.exports = talkerRouter;
