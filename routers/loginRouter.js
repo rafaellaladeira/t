@@ -10,5 +10,3 @@ loginRouter.post('/', loginValidation, (req, res) => {
 });
 
 module.exports = loginRouter; 
-
-// const token = toke.replace(/-/g, '').substring(0, 16);
