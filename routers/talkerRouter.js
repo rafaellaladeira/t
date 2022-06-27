@@ -18,6 +18,7 @@ talkerRouter.get('/search',
     const nameSearch = req.query.q;
     const data = await readFile();
     const searchInput = data.filter((person) => person.name.includes(nameSearch));
+    console.log(searchInput);
     if (searchInput) {
         return res.status(200).json(searchInput);
     }
@@ -58,26 +59,26 @@ talkerRouter.get('/:id', async (req, res) => {
     }
     });
 
-talkerRouter.delete('/:id', tokenValidation, async (req, res) => {
-    const { id } = req.params;
-    const data = await readFile();
-    const newPerson = data.findIndex((person) => person.id === Number(id));
-
-    if (newPerson !== -1) {
-        const newData = data.slice(newPerson, 1);
-        writeFIle(newData);
-        return res.status(204).end();
-    }
-});
-talkerRouter.get('/', async (req, res) => {
-    try {
+    talkerRouter.delete('/:id', tokenValidation, async (req, res) => {
+        const { id } = req.params;
         const data = await readFile();
-        if (data.length > 1) return res.status(200).json(data);
-        return res.status(200).json([]);
-    } catch (Error) {
-        return res.status(404).end();
-    }
-   });
+        const newPerson = data.findIndex((person) => person.id === Number(id));
+
+        if (newPerson !== -1) {
+            const newData = data.slice(newPerson, 1);
+            writeFIle(newData);
+            return res.status(204).end();
+        }
+    });
+    talkerRouter.get('/', async (req, res) => {
+        try {
+            const data = await readFile();
+            if (data.length > 1) return res.status(200).json(data);
+            return res.status(200).json([]);
+        } catch (Error) {
+            return res.status(404).end();
+        }
+    });
 
    talkerRouter.post('/',
         tokenValidation, 
