@@ -1,4 +1,4 @@
-# t
+# Talker Manager Project 
 
 Neste projeto de Backend, foi feito uma aplicação de cadastro de palestrantes, em que é possível visualizar/pesquisar, cadastrar, editar e excluir informações. Para isso, foi desenvolvido uma API de um CRUD, em Node.js com Express.
 
